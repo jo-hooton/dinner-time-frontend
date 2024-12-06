@@ -6,7 +6,8 @@ import { Recipe } from '../definitions/types';
 import LoadingSpinner from './LoadingSpinner';
 
 const RecipeSearch: React.FC = () => {
-  const [input, setInput] = useState<string>('');
+  const [query, setQuery] = useState<string>('');
+  const [time, setTime] = useState<string>('');
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
@@ -34,11 +35,11 @@ const RecipeSearch: React.FC = () => {
 
   // use useCallback to memoize the debounced search function
   const debouncedSearch = useCallback(
-    debounce(async (query: string, page: number) => {
+    debounce(async (query: string, time: string, page: number) => {
       setLoading(true);
       try {
         const response = await axios.get('http://localhost:3000/recipes', {
-          params: { query, page, per: 10 },
+          params: { query, time, page, per: 10 },
         });
         if (page === 1) {
           setRecipes(response.data);
@@ -60,20 +61,28 @@ const RecipeSearch: React.FC = () => {
     []
   );
 
-  // update input and invoke debounced search
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  // update query and invoke debounced search
+  const handleQueryChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setInput(value);
-    setCurrentPage(1); // Reset to first page on a new search
-    debouncedSearch(value, 1);
+    setQuery(value);
+    setCurrentPage(1);
+    debouncedSearch(value, time, 1);
+  };
+
+  // update time and invoke debounced search
+  const handletimeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setTime(value);
+    setCurrentPage(1);
+    debouncedSearch(query, value, 1);
   };
 
   // fetch recipes when page or input changes
   useEffect(() => {
-    if (input || currentPage > 1) {
-      debouncedSearch(input, currentPage);
+    if (query || time || currentPage > 1) {
+      debouncedSearch(query, time, currentPage);
     }
-  }, [currentPage, input, debouncedSearch]);
+  }, [currentPage, query, time, debouncedSearch]);
 
   // clean up the debounced function on component unmount
   useEffect(() => {
@@ -84,13 +93,23 @@ const RecipeSearch: React.FC = () => {
 
   return (
     <div className='grid min-h-screen w-full'>
-      <input
-        type="text"
-        value={input}
-        placeholder="Enter ingredients..."
-        onChange={handleInputChange}
-        className='h-12 w-full border py-2 px-3 mb-3 leading-tight focus:outline-none'
-      />
+      <div className='flex'>
+        <input
+          type="text"
+          value={query}
+          placeholder="Enter ingredients..."
+          onChange={handleQueryChange}
+          className='h-12 w-full border py-2 px-3 mb-3'
+        />
+        <div className="flex h-12 mb-3">
+          <select onChange={handletimeChange} className="border py-2 px-3">
+            <option value="">No time limit</option>
+            <option value="15">Under 15 minutes</option>
+            <option value="30">Under 30 minutes</option>
+            <option value="60">Under 1 hour</option>
+          </select>
+        </div>
+      </div>
       <div className="grid gap-4 grid-cols-3">
         {recipes.map((recipe, index) => {
           if (recipes.length === index + 1) {
