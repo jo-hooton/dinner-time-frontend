@@ -3,6 +3,7 @@ import axios from 'axios';
 import debounce from 'lodash.debounce';
 import RecipeCard from './RecipeCard';
 import { Recipe } from '../definitions/types';
+import LoadingSpinner from './LoadingSpinner';
 
 const RecipeSearch: React.FC = () => {
   const [input, setInput] = useState<string>('');
@@ -103,7 +104,7 @@ const RecipeSearch: React.FC = () => {
           }
         })}
       </div>
-      {loading && <p>Loading...</p>}
+      {loading && <LoadingSpinner />}
     </div>
   );
 };
