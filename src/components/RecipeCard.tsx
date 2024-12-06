@@ -9,6 +9,7 @@ interface RecipeCardProps {
 const RecipeCard: FC<RecipeCardProps> = ({ recipe }) => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
+  const [showIngredients, setShowIngredients] = useState<boolean>(false);
 
   const imageUrl = recipe.image ? recipe.image : 'src/assets/placeholder.png';
 
@@ -56,11 +57,19 @@ const RecipeCard: FC<RecipeCardProps> = ({ recipe }) => {
         {isFavorite ? '★' : '☆'}
       </button>
       <h2 className="text-xl font-bold mb-2">{recipe.title}</h2>
-      <ul>
-        {recipe.ingredients.slice(0, 3).map((ingredient, index) => (
-          <li key={index}>{ingredient}</li>
-        ))}
-      </ul>
+      <button
+        onClick={() => setShowIngredients((prev) => !prev)}
+        className="text-sm text-blue-500 mb-2 focus:outline-none"
+      >
+        {showIngredients ? 'Hide Ingredients' : 'Show Ingredients'}
+      </button>
+      {showIngredients && (
+        <ul className="mt-2 list-disc pl-5">
+          {recipe.ingredients.map((ingredient, index) => (
+            <li key={index}>{ingredient}</li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
