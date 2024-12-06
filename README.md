@@ -1,50 +1,63 @@
-# React + TypeScript + Vite
+# Dinner Time Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+Dinner Time is a web application that helps users quickly find the most relevant recipes based on the ingredients they already have at home. The application also allows users to exclude specific ingredients, set time constraints for recipe preparation, and save their favourite recipes.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The frontend of Dinner Time is built using **React** with **TypeScript** for type safety and **Tailwind CSS** for styling. The frontend provides a user-friendly interface to search for recipes, filter by ingredients, exclude specific ingredients, filter by time, and save favourites.
 
-## Expanding the ESLint configuration
+## User Stories
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Below are the user stories that outline the core features of Dinner Time and their importance to the overall user experience:
 
-- Configure the top-level `parserOptions` property like this:
+### User Story 1: Search for Recipes by Ingredients
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+As a **home cook**, I want to **search for recipes using the ingredients** I have at home so that I can **quickly find dishes** to prepare without needing to buy additional ingredients.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+- **Acceptance Criteria**:
+  - Users can enter multiple ingredients in the search bar.
+  - The app displays recipes that match the provided ingredients.
+  - Debouncing ensures efficient searching without excessive API requests.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### User Story 2: Exclude Unwanted Ingredients
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+As a user with limited ingredients in my kitchen, I want to **exclude certain ingredients** from the search results so that I do not see recipes containing ingredients I do not have.
+
+- **Acceptance Criteria**:
+  - Users can enter space-separated ingredients they wish to exclude in the "Exclude ingredients" input field.
+  - Recipes containing these excluded ingredients are filtered out from the results.
+
+### User Story 3: Filter Recipes by Preparation Time
+
+As a **busy individual**, in addition to filtering by ingredients, I want to **filter recipes by preparation time** so that I can find recipes that fit within my available time frame.
+
+- **Acceptance Criteria**:
+  - Users can choose a time filter (e.g., under 15 minutes, under 30 minutes).
+  - Only recipes that can be prepared within the specified time are displayed.
+
+## Features
+
+- **Ingredient Search**: Users can input ingredients they have at home to find matching recipes.
+- **Exclude Ingredients**: Users can specify ingredients they want to exclude from search results.
+- **Filter by Cooking Time**: Set a maximum cooking time to refine the recipe search.
+
+## Installation
+
+To run the frontend locally:
+
+1. Navigate to the frontend directory: `cd dinner-time-frontend`
+2. Install dependencies: `yarn install`
+3. Start the frontend development server: `yarn start`
+
+## Technologies Used
+
+- **React** (with TypeScript)
+- **Tailwind CSS** for styling
+- **Axios** for making HTTP requests to the backend
+- **Debouncing** with `lodash.debounce` to prevent excessive API calls during input
+
+## Future Improvements
+
+- **Enhance Favourites Management**: Allow users to create accounts to save favourites across devices. Add favourites page for users to easily reference shortlisted recipes.
+- **Add User Authentication**: Implement OAuth or local authentication for user accounts.
+- **Improve Styling**: Further refine the UI to enhance the user experience.
