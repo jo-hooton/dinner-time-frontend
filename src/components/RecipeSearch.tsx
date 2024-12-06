@@ -1,12 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import axios from 'axios';
 import debounce from 'lodash.debounce';
-
-interface Recipe {
-  id: number;
-  title: string;
-  ingredients: string[];
-}
+import RecipeCard from './RecipeCard';
+import { Recipe } from '../definitions/types';
 
 const RecipeSearch: React.FC = () => {
   const [input, setInput] = useState<string>('');
@@ -44,18 +40,19 @@ const RecipeSearch: React.FC = () => {
   }, [debouncedSearch]);
 
   return (
-    <div>
+    <div className='grid min-h-screen w-full'>
       <input
         type="text"
         value={input}
         placeholder="Enter ingredients..."
         onChange={handleInputChange}
+        className='h-12 w-full border py-2 px-3 mb-3 leading-tight focus:outline-none'
       />
-      <ul>
+      <div className="grid gap-4 grid-cols-3">
         {recipes.map((recipe) => (
-          <li key={recipe.id}>{recipe.title}</li>
+          <RecipeCard key={recipe.id} recipe={recipe} />
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
