@@ -53,6 +53,7 @@ const RecipeCard: FC<RecipeCardProps> = ({ recipe }) => {
         className={`absolute top-5 right-5 h-12 w-12 p-1 text-3xl rounded-full bg-white/75 ${
           isFavorite ? 'text-blue-500' : 'text-gray-400'
         }`}
+        aria-label={`${isFavorite ? 'unfavourite' : 'favourite'} ${recipe.title}`}
       >
         {isFavorite ? '★' : '☆'}
       </button>
@@ -60,6 +61,7 @@ const RecipeCard: FC<RecipeCardProps> = ({ recipe }) => {
       <button
         onClick={() => setShowIngredients((prev) => !prev)}
         className="text-sm text-blue-500 mb-2 focus:outline-none"
+        aria-label={`View ingredients for ${recipe.title}`}
       >
         {showIngredients ? 'Hide Ingredients' : 'Show Ingredients'}
       </button>

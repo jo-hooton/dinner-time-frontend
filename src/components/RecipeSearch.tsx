@@ -101,24 +101,39 @@ const RecipeSearch: React.FC = () => {
   }, [debouncedSearch]);
 
   return (
-    <div className='grid min-h-screen w-full'>
+    <div className='min-h-screen w-full' role="main">
+      <h1 className="text-3xl font-bold p-2">Recipe Finder</h1>
       <div className='flex flex-col mb-3'>
+        <label htmlFor="query-input" className="sr-only">Search ingredients</label>
         <input
+          id="query-input"
           type="text"
           value={query}
           placeholder="Enter ingredients..."
           onChange={handleQueryChange}
           className='h-12 w-full border py-2 px-3 mb-3'
+          aria-label="Search ingredients"
         />
+
+        <label htmlFor="exclude-input" className="sr-only">Exclude ingredients</label>
         <input
+          id="exclude-input"
           type="text"
           value={exclude}
           placeholder="Exclude ingredients..."
           onChange={handleExcludeChange}
           className='h-12 w-full border py-2 px-3 mb-3'
+          aria-label="Exclude ingredients from results"
         />
+
+        <label htmlFor="time-select" className="sr-only">Select maximum cooking time</label>
         <div className="flex h-12 mb-3">
-          <select onChange={handleTimeChange} className="border py-2 px-3">
+          <select
+            id="time-select"
+            onChange={handleTimeChange}
+            className="border py-2 px-3"
+            aria-label="Select maximum cooking time"
+          >
             <option value="">No time limit</option>
             <option value="15">Under 15 minutes</option>
             <option value="30">Under 30 minutes</option>
@@ -139,7 +154,12 @@ const RecipeSearch: React.FC = () => {
           }
         })}
       </div>
-      {loading && <LoadingSpinner />}
+      {loading && (
+        <div role="status" aria-live="polite">
+          <LoadingSpinner />
+          <span className="sr-only">Loading recipes...</span>
+        </div>
+      )}
     </div>
   );
 };
