@@ -14,6 +14,8 @@ const RecipeSearch: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [hasMore, setHasMore] = useState<boolean>(true);
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   // observe the last element for infinite scroll
   const observer = useRef<IntersectionObserver | null>(null);
 
@@ -39,7 +41,7 @@ const RecipeSearch: React.FC = () => {
     debounce(async (query: string, exclude: string, time: string, page: number) => {
       setLoading(true);
       try {
-        const response = await axios.get('http://localhost:3000/recipes', {
+        const response = await axios.get(`${API_BASE_URL}/recipes`, {
           params: { query, exclude, time, page, per: 10 },
         });
         if (page === 1) {
@@ -141,7 +143,7 @@ const RecipeSearch: React.FC = () => {
           </select>
         </div>
       </div>
-      <div className="grid gap-4 grid-cols-3">
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
         {recipes.map((recipe, index) => {
           if (recipes.length === index + 1) {
             return (
